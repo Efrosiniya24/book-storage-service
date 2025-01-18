@@ -23,6 +23,8 @@ public class BookEntity {
     private String name;
 
     private String genre;
+
+    @Column(length = 500)
     private String description;
 
     @Column(nullable = false)
