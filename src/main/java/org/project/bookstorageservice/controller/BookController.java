@@ -1,8 +1,10 @@
 package org.project.bookstorageservice.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.project.bookstorageservice.dto.BookDTO;
 import org.project.bookstorageservice.service.BookService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,5 +26,15 @@ public class BookController {
     public ResponseEntity<List<BookDTO>> getAllBooks() {
         List<BookDTO> listOfBooks = bookService.listOfBooks();
         return ResponseEntity.ok(listOfBooks);
+    }
+
+    @GetMapping("/book/{id}")
+    public ResponseEntity<BookDTO> getBookById(@PathVariable Long id) {
+        try {
+            BookDTO book = bookService.getBookById(id);
+            return ResponseEntity.ok(book);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 }
