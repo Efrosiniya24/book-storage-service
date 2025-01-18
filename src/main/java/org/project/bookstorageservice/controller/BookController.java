@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import org.project.bookstorageservice.dto.BookDTO;
 import org.project.bookstorageservice.service.BookService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -19,5 +18,11 @@ public class BookController {
     public ResponseEntity<BookDTO> addBook(@RequestBody BookDTO bookDTO) {
         BookDTO savedBook = bookService.addBook(bookDTO);
         return ResponseEntity.ok(savedBook);
+    }
+
+    @GetMapping("/all-books")
+    public ResponseEntity<List<BookDTO>> getAllBooks() {
+        List<BookDTO> listOfBooks = bookService.listOfBooks();
+        return ResponseEntity.ok(listOfBooks);
     }
 }
