@@ -47,4 +47,14 @@ public class BookController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+    @PatchMapping("/updateBook")
+    public ResponseEntity<BookDTO> updateBook(@RequestBody BookDTO bookDTO) {
+        try {
+            BookDTO updatedBook = bookService.updateBook(bookDTO);
+            return ResponseEntity.ok(updatedBook);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }

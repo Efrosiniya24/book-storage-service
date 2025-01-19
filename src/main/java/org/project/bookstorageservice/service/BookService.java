@@ -39,4 +39,32 @@ public class BookService {
         return bookEntity.map(bookMapper::toBookDTO)
                 .orElseThrow(() -> new EntityNotFoundException("Book with ISBN = " + isbn + " not found"));
     }
+
+    public BookDTO updateBook(BookDTO bookDTO) {
+        BookEntity requiredBook = bookRepository.findById(bookDTO.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Book with id = " + bookDTO.getId() + "not found"));
+
+        if (bookDTO.getIsbn() != null) {
+            requiredBook.setIsbn(bookDTO.getIsbn());
+        }
+
+        if (bookDTO.getName() != null) {
+            requiredBook.setName(bookDTO.getName());
+        }
+
+        if (bookDTO.getAuthor() != null) {
+            requiredBook.setAuthor(bookDTO.getAuthor());
+        }
+
+        if (bookDTO.getDescription() != null) {
+            requiredBook.setDescription(bookDTO.getDescription());
+        }
+
+        if (bookDTO.getGenre() != null) {
+            requiredBook.setGenre(bookDTO.getGenre());
+        }
+
+        BookEntity updatedBook = bookRepository.save(requiredBook);
+        return bookMapper.toBookDTO(updatedBook);
+    }
 }
