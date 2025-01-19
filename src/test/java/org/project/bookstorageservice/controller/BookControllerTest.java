@@ -171,4 +171,16 @@ class BookControllerTest {
                 .andExpect(status().isOk());
         verify(bookService, times(1)).deleteBook(1L);
     }
+
+    @Test
+    void deleteBookIsNotFoundTest() throws Exception {
+        //given
+        //when
+        doThrow(new EntityNotFoundException()).when(bookService).deleteBook(1L);
+
+        //then
+        mockMvc.perform(delete("/books/book-storage/delete-book/{id}", 1L))
+                .andExpect(status().isNotFound());
+        verify(bookService, times(1)).deleteBook(1L);
+    }
 }
