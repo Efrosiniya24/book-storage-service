@@ -119,4 +119,19 @@ class BookControllerTest {
                 .andExpect(status().isOk());
         verify(bookService, times(1)).findBookByIsbn("isbn");
     }
+
+    @Test
+    void bookByIsbnIsNotfoundTest() throws Exception {
+        //given
+        BookDTO bookDTO = new BookDTO(1L, "isbn", "name", "genre", "description", "author");
+        String bookDTOJson = objectMapper.writeValueAsString(bookDTO);
+
+        //when
+        when(bookService.findBookByIsbn("isbn")).thenThrow(EntityNotFoundException.class);
+
+        //then
+        mockMvc.perform(get("/books/book-storage/book/isbn/{id}", "isbn"))
+                .andExpect(status().isNotFound());
+        verify(bookService, times(1)).findBookByIsbn("isbn");
+    }
 }
