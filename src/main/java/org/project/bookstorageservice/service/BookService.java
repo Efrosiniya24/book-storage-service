@@ -67,4 +67,11 @@ public class BookService {
         BookEntity updatedBook = bookRepository.save(requiredBook);
         return bookMapper.toBookDTO(updatedBook);
     }
+
+    public void deleteBook(Long id) {
+        if (!bookRepository.existsById(id)) {
+            throw new EntityNotFoundException("Book with id = " + id + " not found");
+        }
+        bookRepository.deleteById(id);
+    }
 }
