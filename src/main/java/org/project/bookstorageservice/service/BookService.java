@@ -42,7 +42,7 @@ public class BookService {
 
     public BookDTO updateBook(BookDTO bookDTO) {
         BookEntity requiredBook = bookRepository.findById(bookDTO.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Book with id = " + bookDTO.getId() + "not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Book with id = " + bookDTO.getId() + " not found"));
 
         if (bookDTO.getIsbn() != null) {
             requiredBook.setIsbn(bookDTO.getIsbn());

@@ -157,5 +157,18 @@ class BookServiceTest {
         verify(bookRepository, times(1)).findById(bookDTO.getId());
         verify(bookMapper, times(1)).toBookDTO(bookEntity);
     }
+
+    @Test
+    void bookWithIdForUpdatingNotFoundTest() {
+        //given
+        BookDTO bookDTO = new BookDTO(1L, "isbn", "name", "genre", "description", "author");
+
+        //when
+        when(bookRepository.findById(1L)).thenReturn(Optional.empty());
+
+        //then
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> bookService.updateBook(bookDTO));
+        assertEquals("Book with id = 1 not found", exception.getMessage());
+    }
 }
 
