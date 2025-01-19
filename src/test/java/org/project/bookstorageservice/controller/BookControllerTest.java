@@ -1,9 +1,7 @@
 package org.project.bookstorageservice.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
-import jdk.jfr.Name;
 import org.junit.jupiter.api.Test;
 import org.project.bookstorageservice.dto.BookDTO;
 import org.project.bookstorageservice.service.BookService;
@@ -92,8 +90,6 @@ class BookControllerTest {
     @Test
     void bookByIdIsNotFoundTest() throws Exception {
         //given
-        BookDTO bookDTO = new BookDTO(1L, "isbn", "name", "genre", "description", "author");
-        String bookDTOJson = objectMapper.writeValueAsString(bookDTO);
 
         //when
         when(bookService.getBookById(1L)).thenThrow(EntityNotFoundException.class);
@@ -124,8 +120,6 @@ class BookControllerTest {
     @Test
     void bookByIsbnIsNotfoundTest() throws Exception {
         //given
-        BookDTO bookDTO = new BookDTO(1L, "isbn", "name", "genre", "description", "author");
-        String bookDTOJson = objectMapper.writeValueAsString(bookDTO);
 
         //when
         when(bookService.findBookByIsbn("isbn")).thenThrow(EntityNotFoundException.class);
@@ -150,6 +144,23 @@ class BookControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bookDTOJson))
                 .andExpect(status().isOk());
+        verify(bookService, times(1)).updateBook(bookDTO);
+    }
+
+    @Test
+    void idUpdateBookNotFoundTest() throws Exception {
+        //given
+        BookDTO bookDTO = new BookDTO(1L, "isbn", "name", "genre", "description", "author");
+        String bookDTOJson = objectMapper.writeValueAsString(bookDTO);
+
+        //when
+        when(bookService.updateBook(bookDTO)).thenThrow(EntityNotFoundException.class);
+
+        //then
+        mockMvc.perform(patch("/books/book-storage/updateBook")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(bookDTOJson))
+                .andExpect(status().isNotFound());
         verify(bookService, times(1)).updateBook(bookDTO);
     }
 }
