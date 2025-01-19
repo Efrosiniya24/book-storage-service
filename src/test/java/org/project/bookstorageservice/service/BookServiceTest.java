@@ -11,6 +11,9 @@ import org.project.bookstorageservice.mapper.BookMapper;
 import org.project.bookstorageservice.repository.BookRepository;
 
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -30,7 +33,7 @@ class BookServiceTest {
     private BookService bookService;
 
     @Test
-    void addBook() {
+    void addBookTest() {
         //given
         BookDTO bookDTO = new BookDTO(1L, "isbn", "name", "genre", "description", "author");
         BookEntity bookEntity = new BookEntity();
@@ -50,6 +53,30 @@ class BookServiceTest {
         verify(bookMapper, times(1)).toBookEntity(bookDTO);
         verify(bookRepository, times(1)).save(bookEntity);
         verify(bookMapper, times(1)).toBookDTO(bookEntity);
+    }
+
+    @Test
+    void listOfBooksTest(){
+        //given
+        List<BookDTO> booksList = Arrays.asList(
+                new BookDTO(1L, "isbn", "name", "genre", "description", "author"),
+                new BookDTO(2L, "isbn2", "name2", "genre2", "description2", "author2")
+        );
+
+        List<BookEntity> booksListEntity = Arrays.asList(
+                new BookEntity(1L, "isbn", "name", "genre", "description", "author"),
+                new BookEntity(2L, "isbn2", "name2", "genre2", "description2", "author2")
+        );
+
+        //when
+        when(bookRepository.findAll()).thenReturn(booksListEntity);
+        when(bookMapper.toBookDTOList(booksListEntity)).thenReturn(booksList);
+
+        //then
+        List<BookDTO> books = bookService.listOfBooks();
+        assertEquals(booksList, books);
+        verify(bookMapper, times(1)).toBookDTOList(booksListEntity);
+        verify(bookRepository, times(1)).findAll();
     }
 }
 
