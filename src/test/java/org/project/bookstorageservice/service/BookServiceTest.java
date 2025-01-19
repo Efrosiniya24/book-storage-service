@@ -138,5 +138,24 @@ class BookServiceTest {
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> bookService.findBookByIsbn("isbn"));
         assertEquals("Book with ISBN = isbn not found", exception.getMessage());
     }
+
+    @Test
+    void updateBookTest() {
+        //given
+        BookDTO bookDTO = new BookDTO(1L, "isbn", "name", "genre", "description", "author");
+        BookEntity bookEntity = new BookEntity(1L, "isbn", "name", "genre", "description", "author");
+
+        //when
+        when(bookRepository.findById(bookDTO.getId())).thenReturn(Optional.of(bookEntity));
+        when(bookRepository.save(bookEntity)).thenReturn(bookEntity);
+        when(bookMapper.toBookDTO(bookEntity)).thenReturn(bookDTO);
+
+        //then
+        BookDTO book = bookService.updateBook(bookDTO);
+        assertEquals(bookDTO, book);
+
+        verify(bookRepository, times(1)).findById(bookDTO.getId());
+        verify(bookMapper, times(1)).toBookDTO(bookEntity);
+    }
 }
 
