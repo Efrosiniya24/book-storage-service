@@ -29,8 +29,14 @@ public class BookService {
     }
 
     public BookDTO getBookById(Long id) {
-        BookEntity bookEntity = bookRepository.findById(id)
+        BookEntity book = bookRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Book with id = " + id + " not found"));
-        return bookMapper.toBookDTO(bookEntity);
+        return bookMapper.toBookDTO(book);
+    }
+
+    public BookDTO findBookByIsbn(String isbn) {
+        Optional<BookEntity> bookEntity = bookRepository.findByIsbn(isbn);
+        return bookEntity.map(bookMapper::toBookDTO)
+                .orElseThrow(() -> new EntityNotFoundException("Book with ISBN = " + isbn + " not found"));
     }
 }

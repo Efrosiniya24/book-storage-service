@@ -37,4 +37,14 @@ public class BookController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+    @GetMapping("/book/isbn/{isbn}")
+    public ResponseEntity<BookDTO> getBookByIsbn(@PathVariable String isbn) {
+        try {
+            BookDTO bookDTO = bookService.findBookByIsbn(isbn);
+            return ResponseEntity.ok(bookDTO);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }
