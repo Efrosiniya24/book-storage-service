@@ -45,8 +45,8 @@ class BookControllerTest {
 
         //then
         mockMvc.perform(post("/books/book-storage/add-book")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(bookDTOJson))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(bookDTOJson))
                 .andExpect(status().isOk());
         verify(bookService, times(1)).addBook(bookDTO);
     }
@@ -65,8 +65,8 @@ class BookControllerTest {
 
         //then
         mockMvc.perform(get("/books/book-storage/all-books")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(booksListJson))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(booksListJson))
                 .andExpect(status().isOk());
         verify(bookService, times(1)).listOfBooks();
     }
@@ -82,8 +82,8 @@ class BookControllerTest {
 
         //then
         mockMvc.perform(get("/books/book-storage/book/{id}", 1L)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(bookDTOJson))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(bookDTOJson))
                 .andExpect(status().isOk());
         verify(bookService, times(1)).getBookById(1L);
     }
@@ -101,5 +101,22 @@ class BookControllerTest {
         mockMvc.perform(get("/books/book-storage/book/{id}", 1L))
                 .andExpect(status().isNotFound());
         verify(bookService, times(1)).getBookById(1L);
+    }
+
+    @Test
+    void getBookByIsbnTest() throws Exception {
+        //given
+        BookDTO bookDTO = new BookDTO(1L, "isbn", "name", "genre", "description", "author");
+        String bookDTOJson = objectMapper.writeValueAsString(bookDTO);
+
+        //when
+        when(bookService.findBookByIsbn("isbn")).thenReturn(bookDTO);
+
+        //then
+        mockMvc.perform(get("/books/book-storage/book/isbn/{id}", "isbn")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(bookDTOJson))
+                .andExpect(status().isOk());
+        verify(bookService, times(1)).findBookByIsbn("isbn");
     }
 }
