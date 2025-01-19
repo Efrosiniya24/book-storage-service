@@ -69,4 +69,23 @@ class BookControllerTest {
                 .andExpect(status().isOk());
         verify(bookService, times(1)).listOfBooks();
     }
+
+    @Test
+    void getBookByIdTest() throws Exception {
+        //given
+        BookDTO bookDTO = new BookDTO(1L, "isbn", "name", "genre", "description", "author");
+        String bookDTOJson = objectMapper.writeValueAsString(bookDTO);
+
+        //when
+        when(bookService.getBookById(1L)).thenReturn(bookDTO);
+
+        //then
+        mockMvc.perform(get("/books/book-storage/book/{id}", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(bookDTOJson))
+                .andExpect(status().isOk());
+        verify(bookService, times(1)).getBookById(1L);
+    }
+
+
 }
