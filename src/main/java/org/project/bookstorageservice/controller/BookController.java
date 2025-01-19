@@ -48,7 +48,7 @@ public class BookController {
         }
     }
 
-    @PatchMapping("/updateBook")
+    @PatchMapping("/update-book")
     public ResponseEntity<BookDTO> updateBook(@RequestBody BookDTO bookDTO) {
         try {
             BookDTO updatedBook = bookService.updateBook(bookDTO);
@@ -58,7 +58,7 @@ public class BookController {
         }
     }
 
-    @DeleteMapping("/deleteBook/{id}")
+    @DeleteMapping("/delete-book/{id}")
     public ResponseEntity<String> deleteBook(@PathVariable Long id) {
         try {
             bookService.deleteBook(id);

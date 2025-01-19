@@ -138,7 +138,7 @@ class BookControllerTest {
         when(bookService.updateBook(bookDTO)).thenReturn(bookDTO);
 
         //then
-        mockMvc.perform(patch("/books/book-storage/updateBook")
+        mockMvc.perform(patch("/books/book-storage/update-book")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bookDTOJson))
                 .andExpect(status().isOk());
@@ -155,7 +155,7 @@ class BookControllerTest {
         when(bookService.updateBook(bookDTO)).thenThrow(EntityNotFoundException.class);
 
         //then
-        mockMvc.perform(patch("/books/book-storage/updateBook")
+        mockMvc.perform(patch("/books/book-storage/update-book")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bookDTOJson))
                 .andExpect(status().isNotFound());
@@ -167,7 +167,7 @@ class BookControllerTest {
         //given
         //when
         //then
-        mockMvc.perform(delete("/books/book-storage/deleteBook/{id}", 1L))
+        mockMvc.perform(delete("/books/book-storage/delete-book/{id}", 1L))
                 .andExpect(status().isOk());
         verify(bookService, times(1)).deleteBook(1L);
     }
