@@ -2,6 +2,7 @@ package org.project.bookstorageservice.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityNotFoundException;
 import jdk.jfr.Name;
 import org.junit.jupiter.api.Test;
 import org.project.bookstorageservice.dto.BookDTO;
@@ -87,5 +88,18 @@ class BookControllerTest {
         verify(bookService, times(1)).getBookById(1L);
     }
 
+    @Test
+    void bookByIdIsNotFoundTest() throws Exception {
+        //given
+        BookDTO bookDTO = new BookDTO(1L, "isbn", "name", "genre", "description", "author");
+        String bookDTOJson = objectMapper.writeValueAsString(bookDTO);
 
+        //when
+        when(bookService.getBookById(1L)).thenThrow(EntityNotFoundException.class);
+
+        //then
+        mockMvc.perform(get("/books/book-storage/book/{id}", 1L))
+                .andExpect(status().isNotFound());
+        verify(bookService, times(1)).getBookById(1L);
+    }
 }
