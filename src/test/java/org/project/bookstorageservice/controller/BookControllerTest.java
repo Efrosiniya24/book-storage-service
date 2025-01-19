@@ -15,9 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -162,5 +160,15 @@ class BookControllerTest {
                         .content(bookDTOJson))
                 .andExpect(status().isNotFound());
         verify(bookService, times(1)).updateBook(bookDTO);
+    }
+
+    @Test
+    void deleteBookTest() throws Exception {
+        //given
+        //when
+        //then
+        mockMvc.perform(delete("/books/book-storage/deleteBook/{id}", 1L))
+                .andExpect(status().isOk());
+        verify(bookService, times(1)).deleteBook(1L);
     }
 }
