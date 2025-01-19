@@ -127,5 +127,16 @@ class BookServiceTest {
         verify(bookRepository, times(1)).findByIsbn("isbn");
         verify(bookMapper, times(1)).toBookDTO(bookEntity);
     }
+
+    @Test
+    void bookWithIsbnNotFoundTest() {
+        //given
+        //when
+        when(bookRepository.findByIsbn("isbn")).thenReturn(Optional.empty());
+
+        //then
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> bookService.findBookByIsbn("isbn"));
+        assertEquals("Book with ISBN = isbn not found", exception.getMessage());
+    }
 }
 
