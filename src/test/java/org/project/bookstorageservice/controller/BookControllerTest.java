@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -133,5 +134,22 @@ class BookControllerTest {
         mockMvc.perform(get("/books/book-storage/book/isbn/{id}", "isbn"))
                 .andExpect(status().isNotFound());
         verify(bookService, times(1)).findBookByIsbn("isbn");
+    }
+
+    @Test
+    void updateBookTest() throws Exception {
+        //given
+        BookDTO bookDTO = new BookDTO(1L, "isbn", "name", "genre", "description", "author");
+        String bookDTOJson = objectMapper.writeValueAsString(bookDTO);
+
+        //when
+        when(bookService.updateBook(bookDTO)).thenReturn(bookDTO);
+
+        //then
+        mockMvc.perform(patch("/books/book-storage/updateBook")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(bookDTOJson))
+                .andExpect(status().isOk());
+        verify(bookService, times(1)).updateBook(bookDTO);
     }
 }
