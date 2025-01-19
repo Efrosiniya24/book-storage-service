@@ -1,5 +1,6 @@
 package org.project.bookstorageservice.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -57,7 +58,7 @@ class BookServiceTest {
     }
 
     @Test
-    void listOfBooksTest(){
+    void listOfBooksTest() {
         //given
         List<BookDTO> booksList = Arrays.asList(
                 new BookDTO(1L, "isbn", "name", "genre", "description", "author"),
@@ -96,6 +97,17 @@ class BookServiceTest {
 
         verify(bookRepository, times(1)).findById(1L);
         verify(bookMapper, times(1)).toBookDTO(bookEntity);
+    }
+
+    @Test
+    void getBookByIdNotFoundTest() {
+        //given
+        //when
+        when(bookRepository.findById(1L)).thenReturn(Optional.empty());
+
+        //then
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> bookService.getBookById(1L));
+        assertEquals("Book with id = 1 not found", exception.getMessage());
     }
 }
 
