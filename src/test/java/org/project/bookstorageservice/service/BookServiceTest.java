@@ -181,5 +181,16 @@ class BookServiceTest {
         bookService.deleteBook(1L);
         verify(bookRepository, times(1)).deleteById(1L);
     }
+
+    @Test
+    void idBookForDeletionNotFoundTest() {
+        //given
+        //when
+        when(bookRepository.existsById(1L)).thenReturn(false);
+
+        //then
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> bookService.deleteBook(1L));
+        verify(bookRepository, times(1)).existsById(1L);
+    }
 }
 
