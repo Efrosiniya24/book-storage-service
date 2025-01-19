@@ -13,6 +13,7 @@ import org.project.bookstorageservice.repository.BookRepository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
@@ -77,6 +78,24 @@ class BookServiceTest {
         assertEquals(booksList, books);
         verify(bookMapper, times(1)).toBookDTOList(booksListEntity);
         verify(bookRepository, times(1)).findAll();
+    }
+
+    @Test
+    void getBookByIdTest() {
+        //given
+        BookDTO bookDTO = new BookDTO(1L, "isbn", "name", "genre", "description", "author");
+        BookEntity bookEntity = new BookEntity(1L, "isbn", "name", "genre", "description", "author");
+
+        //when
+        when(bookRepository.findById(1L)).thenReturn(Optional.of(bookEntity));
+        when(bookMapper.toBookDTO(bookEntity)).thenReturn(bookDTO);
+
+        //then
+        BookDTO book = bookService.getBookById(1L);
+        assertEquals(bookDTO, book);
+
+        verify(bookRepository, times(1)).findById(1L);
+        verify(bookMapper, times(1)).toBookDTO(bookEntity);
     }
 }
 
