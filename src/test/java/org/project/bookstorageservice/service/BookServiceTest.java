@@ -170,5 +170,16 @@ class BookServiceTest {
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> bookService.updateBook(bookDTO));
         assertEquals("Book with id = 1 not found", exception.getMessage());
     }
+
+    @Test
+    void deleteBookTest() {
+        //given
+        //when
+        when(bookRepository.existsById(1L)).thenReturn(true);
+
+        //then
+        bookService.deleteBook(1L);
+        verify(bookRepository, times(1)).deleteById(1L);
+    }
 }
 
