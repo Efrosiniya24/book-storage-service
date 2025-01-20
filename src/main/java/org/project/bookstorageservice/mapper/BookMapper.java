@@ -6,7 +6,7 @@ import org.project.bookstorageservice.dto.BookDTO;
 import org.project.bookstorageservice.entity.BookEntity;
 
 import java.util.List;
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(componentModel = "spring")
 public interface BookMapper {
     BookDTO toBookDTO(BookEntity bookEntity);
     BookEntity toBookEntity(BookDTO bookDTO);
