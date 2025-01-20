@@ -12,6 +12,6 @@ public interface BookFeign {
     @PostMapping("books/book-tracker/create-book/{id}")
     ResponseEntity<String> createBook(@PathVariable Long id);
 
-    @DeleteMapping("/book-tracker/delete-book/{id}")
+    @DeleteMapping("books/book-tracker/delete-book/{id}")
     ResponseEntity<String> deleteBook(@PathVariable Long id);
 }
