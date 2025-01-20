@@ -37,7 +37,6 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:3.12.4'
 
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.2.0'
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:4.2.0'
 
     implementation 'com.thoughtworks.xstream:xstream:1.4.21'
 
