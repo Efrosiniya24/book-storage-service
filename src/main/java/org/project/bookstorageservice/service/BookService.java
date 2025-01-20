@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.project.bookstorageservice.dto.BookDTO;
 import org.project.bookstorageservice.entity.BookEntity;
+import org.project.bookstorageservice.feign.BookFeign;
 import org.project.bookstorageservice.mapper.BookMapper;
 import org.project.bookstorageservice.repository.BookRepository;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,14 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
+    private final BookFeign bookFeign;
 
     public BookDTO addBook(BookDTO bookDTO) {
         BookEntity bookEntity = bookMapper.toBookEntity(bookDTO);
         BookEntity savedBook = bookRepository.save(bookEntity);
+
+        bookFeign.createBook(savedBook.getId());
+
         return bookMapper.toBookDTO(savedBook);
     }
 
@@ -73,5 +78,7 @@ public class BookService {
             throw new EntityNotFoundException("Book with id = " + id + " not found");
         }
         bookRepository.deleteById(id);
+
+        bookFeign.deleteBook(id);
     }
 }
