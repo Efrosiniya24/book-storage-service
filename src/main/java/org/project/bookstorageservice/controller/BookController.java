@@ -1,5 +1,6 @@
 package org.project.bookstorageservice.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.project.bookstorageservice.dto.BookDTO;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("books/book-storage")
+@Tag(name = "book-storage")
 public class BookController {
     private final BookService bookService;
 
