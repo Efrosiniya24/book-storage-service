@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@FeignClient(name = "book-tracker-service", url = "http://localhost:8081")
+@FeignClient(name = "book-tracker-service")
 public interface BookFeign {
 
     @PostMapping("books/book-tracker/create-book/{id}")
