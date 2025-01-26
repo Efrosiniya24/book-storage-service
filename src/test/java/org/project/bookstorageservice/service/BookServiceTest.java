@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.project.bookstorageservice.dto.BookDTO;
 import org.project.bookstorageservice.entity.BookEntity;
+import org.project.bookstorageservice.feign.BookFeign;
 import org.project.bookstorageservice.mapper.BookMapper;
 import org.project.bookstorageservice.repository.BookRepository;
 
@@ -34,11 +35,14 @@ class BookServiceTest {
     @InjectMocks
     private BookService bookService;
 
+    @Mock
+    private BookFeign bookFeign;
+
     @Test
     void addBookTest() {
         //given
         BookDTO bookDTO = new BookDTO(1L, "isbn", "name", "genre", "description", "author");
-        BookEntity bookEntity = new BookEntity();
+        BookEntity bookEntity = new BookEntity(1L, "isbn", "name", "genre", "description", "author");
 
         //when
         when(bookMapper.toBookEntity(bookDTO)).thenReturn(bookEntity);
@@ -55,6 +59,7 @@ class BookServiceTest {
         verify(bookMapper, times(1)).toBookEntity(bookDTO);
         verify(bookRepository, times(1)).save(bookEntity);
         verify(bookMapper, times(1)).toBookDTO(bookEntity);
+        verify(bookFeign).createBook(bookEntity.getId());
     }
 
     @Test
