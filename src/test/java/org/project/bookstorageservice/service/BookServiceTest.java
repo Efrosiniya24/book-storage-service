@@ -185,6 +185,8 @@ class BookServiceTest {
         //then
         bookService.deleteBook(1L);
         verify(bookRepository, times(1)).deleteById(1L);
+        verify(bookFeign).deleteBook(1L);
+
     }
 
     @Test
