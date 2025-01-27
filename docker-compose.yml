@@ -6,7 +6,7 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      - db-news
+      - db-books
     restart: always
   db-books:
     image: postgres:15
