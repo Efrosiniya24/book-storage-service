@@ -22,5 +22,3 @@
 11. Для тестирования API использовать следующие ссылки со Swagger UI:  
     http://localhost:8081/swagger-ui/index.html  
     http://localhost:8082/swagger-ui/index.html
-
-[books.postman_collection.json](..%2F..%2F..%2FBSUIR%2Fbooks.postman_collection.json)
